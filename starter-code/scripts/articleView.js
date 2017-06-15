@@ -77,8 +77,10 @@ articleView.handleMainNav = function() {
   //       So: You need to dynamically build a selector string with the correct ID, based on the
   //       data available to you on the .tab element that was clicked.
   $('.main-nav').on('click', '.tab', function(){
-    $('.tab-content').hide();
-    $('#' + $(this).data('content')).fadeIn();
+    $('.tab-content').hide(); // hide all contents
+    $('#' + $(this).data('content')).fadeIn(); // show only the current select
+
+    // this represents the current tab that's clicked
   });
 
   $('.main-nav .tab:first').click(); // Let's now trigger a click on the first .tab element, to set up the page.
@@ -94,15 +96,32 @@ articleView.setTeasers = function() {
   //       process any .read-on clicks that happen within child nodes.
 
   // STRETCH GOAl!: change the 'Read On' link to 'Show Less'
+  $('#articles').on('click', '.read-on', function(event) {
+      // if ($(this)) {
+        event.preventDefault();
+        $(this).parent().find('*').fadeIn();
+        // $('.read-on').html('Show Less');
+        $('.read-on').hide();
+        $('.show-less').fadeIn()
+  });
+
+  $('#articles').on('click', '.show-less', function(event) {
+      // if ($(this)) {
+        event.preventDefault();
+        $(this).parent().find('.article-body *:nth-of-type(n+2)').hide();
+        $('.show-less').hide();
+        $('.read-on').fadeIn()
+  });
+
+  // <a href="#" class="read-on">Read on &rarr;</a>
 
 };
-// articleView.populateFilters();
 
 // TODO: Call all of the above functions, once we are sure the DOM is ready.
 $(document).ready(function() {
   articleView.populateFilters();
   articleView.handleAuthorFilter();
   articleView.handleCategoryFilter();
-  
-
+  articleView.handleMainNav();
+  articleView.setTeasers();
 })
