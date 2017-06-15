@@ -77,8 +77,13 @@ articleView.handleMainNav = function() {
   //       So: You need to dynamically build a selector string with the correct ID, based on the
   //       data available to you on the .tab element that was clicked.
   $('.main-nav').on('click', '.tab', function(){
-    $('.tab-content').hide(); // hide all contents
-    $('#' + $(this).data('content')).fadeIn(); // show only the current select
+    $('.tab-content').hide(); // hide all .tab-contents
+    // $('#' + $(this).data('content')).fadeIn(); // only show the current select
+    var $current = $(this).data('content');
+    console.log($current);
+    // $('#'+ $(this) + '.tab-content').fadeIn();
+    $('#' + $current + '.tab-content').fadeIn();
+    // $('#about.tab-content').fadeIn()
 
     // this represents the current tab that's clicked
   });
@@ -97,24 +102,23 @@ articleView.setTeasers = function() {
 
   // STRETCH GOAl!: change the 'Read On' link to 'Show Less'
   $('#articles').on('click', '.read-on', function(event) {
-      // if ($(this)) {
         event.preventDefault();
-        $(this).parent().find('*').fadeIn();
-        // $('.read-on').html('Show Less');
-        $('.read-on').hide();
-        $('.show-less').fadeIn()
+        if ($(this).hasClass("active")) {
+          $(this).removeClass("active");
+          $(this).parent().find('.article-body *:nth-of-type(n+2)').hide();
+          $(this).html('Read on &rarr;');
+        } else {
+          $(this).parent().find('*').fadeIn();
+          $(this).text('Show Less');
+          $(this).addClass("active");
+        }
   });
 
-  $('#articles').on('click', '.show-less', function(event) {
-      // if ($(this)) {
-        event.preventDefault();
-        $(this).parent().find('.article-body *:nth-of-type(n+2)').hide();
-        $('.show-less').hide();
-        $('.read-on').fadeIn()
-  });
-
-  // <a href="#" class="read-on">Read on &rarr;</a>
-
+  // $('#articles').on('click', '.show-less', function(event) {
+  //       event.preventDefault();
+  //       $(this).parent().find('.article-body *:nth-of-type(n+2)').hide();
+  //       $(this).html('Read on &rarr;');
+  // });
 };
 
 // TODO: Call all of the above functions, once we are sure the DOM is ready.
