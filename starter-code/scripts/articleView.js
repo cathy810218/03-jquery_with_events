@@ -104,12 +104,15 @@ articleView.setTeasers = function() {
   $('#articles').on('click', '.read-on', function(event) {
         event.preventDefault();
         if ($(this).hasClass("active")) {
+          $('body').animate({
+            scrollTop: $(this).parent().offset().top
+          }, 200);
           $(this).removeClass("active");
           $(this).parent().find('.article-body *:nth-of-type(n+2)').hide();
           $(this).html('Read on &rarr;');
         } else {
           $(this).parent().find('*').fadeIn();
-          $(this).text('Show Less');
+          $(this).html('Show Less &larr;');
           $(this).addClass("active");
         }
   });
